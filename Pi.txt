@@ -1,0 +1,166 @@
+import Draw
+import random
+import math
+import time
+
+# openingScreen: display an introduction and let sleep for x seconds
+
+def openingScreen():
+    size = 250        
+    Draw.clear()
+    Draw.setBackgroundColor(r, g, b)
+    Draw.setFontFamily(font)
+    Draw.setFontSize(size)
+    Draw.string("Approximations of Pi", size/3, size/2)
+    Draw.string("Explanation", size, size)
+    
+
+# first simulation: Cesaro's approximation. 
+def Cesaro(): 
+    
+    ####COPRIME MAGIC CODE
+    
+    MAX = 1000000000000000
+    
+    ## returns the greatest common divisor of m and n
+    ## See http://en.wikipedia.org/wiki/Euclidean_algorithm for an explanation
+    def gcd(m, n):
+        if n == 0: return m
+        else: return gcd(n, m % n)
+    
+   # before = time.time()
+    
+    for i in range(100):
+        num1 = random.randint(0, MAX)
+        num2 = random.randint(0, MAX)
+        gcd(num1, num2)
+    
+   # print(time.time() - before)
+    
+    #### END OF COPRIME        
+    scale = 4 # Or something, to scale whole image at once
+    
+    levels = [[1000000, 0, 0, Draw.DARK_BLUE], [1000000000, 0, 0, Draw.GREEN], [1000000000000, 0, 0, Draw.YELLOW]]
+    
+    Draw.clear()
+    Draw.setColor(Draw.BLACK)
+    #display explanation
+    Draw.string("explanation", 200, 225)
+    
+    #draw the axes of the plot
+    Draw.line(50, 50, 50, 200)
+    Draw.line(50, 200, 350, 200)
+    #draw a horizontal red line, at y=pi
+    Draw.setColor(Draw.RED)
+    Draw.line(50, 200 - math.pi, 350, 200 - math.pi)
+    
+    #for each x of NUM_EXPERIMENTS times
+    for experiment in range (1000):
+    #for each level in levels:
+        for level in levels: 
+    #chose a pair of random ints between 0 and level[0]
+            q = random.randint(0, level[0])
+            r = random.randint(0, level[0])
+            #if they are *coprime:
+            if gcd(q, r): # look more into this
+                #increment level[1]
+                level[1] +=1 
+                #compute the estimate of pi for that level, and compute the new y coordinate for its plot
+                newy = levels[1] / level  
+                #set the color to level[3]
+                Draw.setColor = levels[3]
+                #draw a line from (x-1,levels[2]) to (x, newy)
+                Draw.line(99+level, levels[2], 100+level, newy)
+                #set level[2] to newy
+                newy = levels[2]
+    Draw.show()
+    
+def Buffon():
+    
+        
+        #clear the canvas
+        Draw.clear()
+        #display explanation at top
+        Draw.string("", x, y)
+        #draw the board
+        Draw.rect(x, y, w, h)
+        for i in range(10):
+            Draw.line(x +i, y1, x+i, y2)
+            
+        hits = 0   
+        #loop N times:
+        for i in range(50):
+            #choose a random x and y
+            ex = random.randint(x, x+w)
+            why =  random.randint(y, y+h)
+            #choose an theta between 0 and 360
+            theta = random.randint(0, 360)
+            
+            # loop through line and see if it crosses a vertical line
+            #if it crosses a line, (y= num), update the hits count (maybe use % here)
+            #update the estimate of pi
+            
+            
+            #draw a line from (x, y) to (x+cos(theta), y+sin(theta))
+            Draw.line(ex, why, ex+cos(theta), why + sin(theta)) # what if it falls of the board?
+            
+            #Every M times:
+                #delete the old estimate from the screen (how?)
+                #draw the new estimate on the screen
+        Draw.show()
+
+def MonteCarlo():
+    #clear the canvas
+    Draw.clear
+    #display explanation at top    
+    Draw.string("", x, y)
+    
+    #draw the square
+    #draw the circle    
+    Draw.rect(100, 100, 100, 100)
+    Draw.oval(100, 100, 100, 100)
+    
+    dividend = 0
+    whole = 0
+    #loop N times
+    for i in range(200)
+        #choose a random x and y
+        #draw the point colored as you wish
+        #update the hits count
+        #update the estimate of pi            
+        x = random.random()*100
+        y = random.random()*100
+
+        whole +=1
+        Draw.setColor(RED)
+        
+        # if (x, y) in Oval
+        #Draw.setColor(RED)
+        Draw.oval(x,y,x,y)
+        # dividend +=1
+        # else: Draw.setColor(BLUE)
+        Draw.oval(x,y,x,y)
+        
+        
+        approx = dividend/whole
+
+        #Every M times
+           #delete the old estimate from the screen
+        
+           #draw the new estimate on the screen
+    #Draw.show()
+
+#time.sleep(5)
+
+    
+def main():
+    size = 250
+    
+    Draw.setCanvasSize(size*2, size)
+    openingScreen()
+    time.sleep(10)
+    Cesaro()
+    MonteCarlo()
+    Buffon()
+
+main()
